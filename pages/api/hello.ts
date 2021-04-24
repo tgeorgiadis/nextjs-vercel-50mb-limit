@@ -12,6 +12,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     presets: ['env'],
   })
   return res.json({
-    message: 'Hello'
+    message: 'Hello',
+    today: today.toISOString(),
+    babel: result?.sourceType
   })
 }
