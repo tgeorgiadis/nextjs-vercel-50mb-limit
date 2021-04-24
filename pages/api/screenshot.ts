@@ -1,7 +1,7 @@
 import {NextApiRequest, NextApiResponse} from 'next'
-import chromium from 'chrome-aws-lambda';
+import chromium from 'chrome-aws-lambda'
 
-async function getBrowserInstance() {
+const getBrowserInstance = async () => {
   const executablePath = await chromium.executablePath
 
   // running locally
@@ -22,28 +22,39 @@ async function getBrowserInstance() {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-try {
-  await chromium.font("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf")
-  const browser = await getBrowserInstance()
+  let browser = null
 
-  const page = await browser.newPage({
-    viewport: {
-      width: 1200,
-      height: 630
+  try {
+    browser = await getBrowserInstance() as any
+
+    const page = await browser.newPage({
+      viewport: {
+        width: 1200,
+        height: 630
+      }
+    })
+
+    await page.goto('https://github.com/vercel/vercel/issues/4739', {
+      timeout: 15 * 1000
+    })
+
+    const data = await page.screenshot({
+      type: "png"
+    })
+
+    res.setHeader("Cache-Control", "s-maxage=31536000, stale-while-revalidate")
+    res.setHeader('Content-Type', 'image/png')
+    res.end(data)
+
+  } catch (error) {
+    console.error(error)
+    return res.status(400).json({
+      error: error || 'Could not take screenshot'
+    })
+  } finally {
+    if (browser !== null) {
+      await browser.close()
     }
-  });
-  //const url = getAbsoluteURL(req.query["path"] as string || "")
-  await page.goto('https://github.com/vercel/vercel/issues/4739', {
-    timeout: 15 * 1000
-  })
-  const data = await page.screenshot({
-    type: "png"
-  })
-  await browser.close()
-  res.setHeader("Cache-Control", "s-maxage=31536000, stale-while-revalidate")
-  res.setHeader('Content-Type', 'image/png')
-  res.end(data)
-} catch (err) {
-  console.error(err)
-}
+  }
+
 }
