@@ -10,7 +10,7 @@ yarn dev
 
 ### Routes in project:
 
-/api/screenshot - Takes a screenshot of this page importing `chrome-aws-lambda`
+/api/screenshot - Returns a screenshot importing `chrome-aws-lambda`
 
 ### The 50mb size limit
 When deployed to Vercel we hit the 50mb serverless function limit

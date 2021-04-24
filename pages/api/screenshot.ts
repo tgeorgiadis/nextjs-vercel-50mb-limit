@@ -6,7 +6,7 @@ const getBrowserInstance = async () => {
 
   // running locally
   if (!executablePath) {
-    const puppeteer = require('puppeteer')
+    const puppeteer = require('puppeteer');
     return puppeteer.launch({
       args: chromium.args,
       headless: true,
@@ -18,6 +18,7 @@ const getBrowserInstance = async () => {
     args: chromium.args,
     executablePath: executablePath,
     headless: chromium.headless,
+    ignoreHTTPSErrors: true
   })
 }
 
@@ -34,9 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
     })
 
-    await page.goto('https://github.com/vercel/vercel/issues/4739', {
-      timeout: 15 * 1000
-    })
+    await page.goto('https://github.com/vercel/vercel/issues/4739')
 
     const data = await page.screenshot({
       type: "png"
