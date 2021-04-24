@@ -9,7 +9,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const page = await browser.newPage()
     await page.goto('https://github.com/vercel/vercel/issues/4739')
     const data = await page.screenshot()
-    res.setHeader("Cache-Control", "s-maxage=31536000, stale-while-revalidate")
     res.setHeader('Content-Type', 'image/png')
     res.end(data)
   } catch (error) {
@@ -39,7 +38,6 @@ const getBrowserInstance = async () => {
 
   return chromium.puppeteer.launch({
     args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
     executablePath: executablePath,
     headless: chromium.headless,
     ignoreHTTPSErrors: true
