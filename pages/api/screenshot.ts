@@ -1,5 +1,4 @@
 import {NextApiRequest, NextApiResponse} from 'next'
-import playwright from 'playwright-core';
 import chromium from 'chrome-aws-lambda';
 
 async function getBrowserInstance() {
@@ -7,15 +6,15 @@ async function getBrowserInstance() {
 
   // running locally
   if (!executablePath) {
-    const playwright = require('playwright')
-    return playwright.chromium.launch({
+    const puppeteer = require('puppeteer')
+    return puppeteer.launch({
       args: chromium.args,
       headless: true,
       ignoreHTTPSErrors: true
     })
   }
 
-  return playwright.chromium.launch({
+  return chromium.puppeteer.launch({
     args: chromium.args,
     executablePath: executablePath,
     headless: chromium.headless,
@@ -34,7 +33,7 @@ try {
     }
   });
   //const url = getAbsoluteURL(req.query["path"] as string || "")
-  await page.goto('https://github.com/vercel/vercel/discussions/4903', {
+  await page.goto('https://github.com/vercel/vercel/issues/4739', {
     timeout: 15 * 1000
   })
   const data = await page.screenshot({

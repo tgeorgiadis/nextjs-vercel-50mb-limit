@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/client-pdf-generation.iml" filepath="$PROJECT_DIR$/.idea/client-pdf-generation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nextjs-vercel-50mb-limit.iml" filepath="$PROJECT_DIR$/nextjs-vercel-50mb-limit.iml" />
     </modules>
   </component>
 </project>
